@@ -8,9 +8,9 @@ import requests
 import re
 from bs4 import BeautifulSoup as bs
 f = open("coopertext.txt","w")
-for year in range(4,16):
-	for month in range(1,12):
-		for day in range(1,31):
+for year in range(4,17):
+	for month in range(1,13):
+		for day in range(1,32):
 			for time in range(1,100):
 				y = str(year)
 				m = str(month)
@@ -23,8 +23,11 @@ for year in range(4,16):
 				if day <10:
 					d = "0" + d
 				if time <10:
-					t = "0" + t		
-				webpage = requests.get("http://transcripts.cnn.com/TRANSCRIPTS/" + y +m + "/" + d +"/acd." + t +".html")
+					t = "0" + t
+				try:		
+					webpage = requests.get("http://transcripts.cnn.com/TRANSCRIPTS/" + y +m + "/" + d +"/acd." + t +".html")
+				except:
+					continue
 				if webpage.status_code == 404:
 					print "whoops,404 on " + "http://transcripts.cnn.com/TRANSCRIPTS/" + y +m + "/" + d +"/acd." + t +".html"
 					break;
