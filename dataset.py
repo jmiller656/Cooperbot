@@ -3,8 +3,10 @@ import numpy as np
 def getText():
 	f = open('coopertext.txt','r')
 	text = ''
-	for i in range(10000):
+	while True:
 		line = f.readline()
+		if not line:
+			break
 		line = re.sub(' +',' ',line)
 		line = re.sub('\n',' ',line)	
 		text = text + line

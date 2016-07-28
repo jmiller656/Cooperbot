@@ -8,9 +8,9 @@ import tensorflow as tf
 import numpy as np 
 import dataset as ds
 #Params
-alpha = 1e-3
+alpha = 1e-4
 iterations = 10000
-batch_size = 10000
+batch_size = 5713
 display_step = 10
 
 #Network params
@@ -89,9 +89,8 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction,tf.float32))
 init = tf.initialize_all_variables()
 
 text = ds.getText()
-a = 0
-batch_x = text[a:a+batch_size*time_steps*input_size]
-charlist = text[a*batch_size+1:a*batch_size+batch_size+1]
+batch_x = text[0:batch_size*time_steps*input_size]
+charlist = text[1:batch_size+1]
 batch_y = np.zeros((len(charlist),output_classes))
 for j in range(len(charlist)-1):
 	batch_y[j][int(charlist[j])] = 1.0 
