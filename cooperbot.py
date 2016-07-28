@@ -121,8 +121,8 @@ with tf.Session() as session:
 	x_test = text[i:i+batch_size]
 	y_test = text[i*batch_size+1:i*2*batch_size]
 	test_accuracy = session.run(accuracy,feed_dict={
-		input_var: test_x,
-		y_var: test_y,
+		input_var: batch_x,
+		y_var: batch_y,
 		hidden_state: np.zeros((batch_size,2*hidden_features))
 		})
 	print ("Final test accuracy: " + test_accuracy)
