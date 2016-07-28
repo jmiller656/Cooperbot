@@ -8,10 +8,10 @@ import tensorflow as tf
 import numpy as np 
 import dataset as ds
 #Params
-alpha = 1e-4
-iterations = 1000
-batch_size = 100
-display_step = 100
+alpha = 1e-3
+iterations = 10000
+batch_size = 10000
+display_step = 10
 
 #Network params
 input_size = 10
@@ -89,15 +89,16 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction,tf.float32))
 init = tf.initialize_all_variables()
 
 text = ds.getText()
-
-#Debug prints
-
+a = 0
+batch_x = text[0:batch_size]
+charlist = text[1:batch_size+1]
+print("Starting training...")
 with tf.Session() as session:
 	session.run(init)
 	for i in range(iterations):
-		batch_x = text[i:i+batch_size*time_steps*input_size]
-		charlist = text[i*batch_size+1:i*batch_size+batch_size+1] 
-		batch_y = np.zeros((batch_size,output_classes))
+		batch_x = text[a:a+batch_size*time_steps*input_size]
+		charlist = text[a*batch_size+1:a*batch_size+batch_size+1]
+		batch_y = np.zeros((len(charlist),output_classes))
 		for j in range(len(charlist)-1):
 			batch_y[j][int(charlist[j])] = 1.0 
 		#Reshape batch to input size
@@ -118,8 +119,8 @@ with tf.Session() as session:
 			print "Step: " + str(i) + ", Training Accuracy: " + str(acc)
 	print "Training is COMPLETE!"
 	x_test = text[i:i+batch_size]
-	y_test = text[i*batch_size+1,i*2*batch_size]
-	test_accuracy = sess.run(accuracy,feed_dict={
+	y_test = text[i*batch_size+1:i*2*batch_size]
+	test_accuracy = session.run(accuracy,feed_dict={
 		input_var: test_x,
 		y_var: test_y,
 		hidden_state: np.zeros((batch_size,2*hidden_features))
