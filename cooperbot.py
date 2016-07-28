@@ -90,19 +90,17 @@ init = tf.initialize_all_variables()
 
 text = ds.getText()
 a = 0
-batch_x = text[0:batch_size]
-charlist = text[1:batch_size+1]
+batch_x = text[a:a+batch_size*time_steps*input_size]
+charlist = text[a*batch_size+1:a*batch_size+batch_size+1]
+batch_y = np.zeros((len(charlist),output_classes))
+for j in range(len(charlist)-1):
+	batch_y[j][int(charlist[j])] = 1.0 
+#Reshape batch to input size
+batch_x = batch_x.reshape((batch_size,time_steps,input_size))
 print("Starting training...")
 with tf.Session() as session:
 	session.run(init)
 	for i in range(iterations):
-		batch_x = text[a:a+batch_size*time_steps*input_size]
-		charlist = text[a*batch_size+1:a*batch_size+batch_size+1]
-		batch_y = np.zeros((len(charlist),output_classes))
-		for j in range(len(charlist)-1):
-			batch_y[j][int(charlist[j])] = 1.0 
-		#Reshape batch to input size
-		batch_x = batch_x.reshape((batch_size,time_steps,input_size))
 		#Run an interation of training
 		session.run(optimizer,feed_dict={
 			input_var:batch_x,
