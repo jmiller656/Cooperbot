@@ -87,9 +87,7 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction,tf.float32))
 
 #Initializing all variables
 init = tf.initialize_all_variables()
-acc = 0
-tf.scalar_summary("Accuracy",acc)
-
+acc_summary = tf.scalar_summary("Accuracy",accuracy)
 text = ds.getText()
 batch_x = text[0:batch_size*time_steps*input_size]
 charlist = text[1:batch_size+1]
@@ -100,7 +98,6 @@ for j in range(len(charlist)-1):
 batch_x = batch_x.reshape((batch_size,time_steps,input_size))
 print("Starting training...")
 with tf.Session() as session:
-	merged = tf.merge_all_summaries()
 	train_writer = tf.train.SummaryWriter("/tmp/log",session.graph)
 	session.run(init)
 	for i in range(iterations):
@@ -112,7 +109,7 @@ with tf.Session() as session:
 			})
 		if i % display_step == 0:
 			#Calculate Accuracy
-			summary,acc = session.run([merged,accuracy], feed_dict={
+			summary,acc = session.run([acc_summary,accuracy], feed_dict={
 				input_var: batch_x,
 				y_var: batch_y,
 				hidden_state: np.zeros((batch_size,2*hidden_features))
