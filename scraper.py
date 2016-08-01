@@ -30,14 +30,14 @@ for year in range(4,17):
 					continue
 				if webpage.status_code == 404:
 					print "whoops,404 on " + "http://transcripts.cnn.com/TRANSCRIPTS/" + y +m + "/" + d +"/acd." + t +".html"
-					break;
+					break
 				parser = bs(webpage.content,"html.parser")
 				data = parser.find_all("p",{"class":"cnnBodyText"})
 				for paragraph in data:
 					try:
 						text = paragraph.text
-						m = re.findall('[A-Za-z %s(),-]+:',text);
-						l = re.split('[A-Za-z %s(),-]+:',text);
+						m = re.findall('[A-Za-z %s(),-]+:',text)
+						l = re.split('[A-Za-z %s(),-]+:',text)
 						i = 0
 						while i< len(l):
 							if l[i].isspace() or l[i] == '':
