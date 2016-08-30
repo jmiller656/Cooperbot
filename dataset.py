@@ -3,16 +3,18 @@ import numpy as np
 import collections
 
 
-def getText():
+def getText(end=10000):
 	f = open('coopertext.txt','r')
 	text = ''
-	while True:
+	i = 0
+	while i<end:
 		line = f.readline()
 		if not line:
 			break
 		line = re.sub(' +',' ',line)
 		line = re.sub('\n',' ',line)
 		text = text + line
+		i+=1
 	text = list(text)
 	for i in range(len(text)):
 		text[i] = ord(text[i])
@@ -53,3 +55,19 @@ def build_dataset(words, vocabulary_size):
 	count[0][1] = unk_count
 	reverse_dictionary = dict(zip(dictionary.values(), dictionary.keys()))
 	return data, count, dictionary, reverse_dictionary
+
+def get_data_vectors(vec_len=10,end=1):
+	text= getText(end=1)
+	x = []
+	y = []
+	for i in range((len(text)-1)//vec_len):
+		in_var = text[i:vec_len+i]
+		out_var = text[i+vec_len]
+		x.append(in_var)
+		ov = np.zeros(128)
+		ov[int(out_var)] = 1
+		y.append(ov)
+	np.asarray(x).astype(np.float32,copy=False)
+	np.asarray(y).astype(np.float32,copy=False)
+	return[x,y]
+		
