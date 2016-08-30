@@ -19,7 +19,7 @@ display_step = 10
 
 #Network params
 input_size = 1
-time_steps = 10
+time_steps = 100
 hidden_features = 256
 output_classes = 127
 num_of_layers = 3
@@ -139,12 +139,12 @@ with tf.Session() as session:
 				x_inp[-1] = float(ord(next_letter))
 				x_inp = x_inp.reshape((batch_size,time_steps,input_size))
 				seq += next_letter
-			f = open('seq_gen_iter' + str(i) + '.txt', 'w+')
+			f = open('Sequences/seq_gen_iter' + str(i) + '.txt', 'w+')
 			print "Sequence:\n" +seq
 			f.write(seq)
 			f.close()
 		if i % 1000 == 0 and not(i == 0):
-			saver.save(session,"/home/josh/Documents/Cooperbot/model_iter" +str(i) +".ckpt")
+			saver.save(session,"/home/josh/Documents/Cooperbot/Models/model_iter" +str(i) +".ckpt")
 			
 			
 	print "Training is COMPLETE!"
